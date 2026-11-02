@@ -11,8 +11,11 @@ FROM python:3.14-slim AS backend
 WORKDIR /app
 COPY backend/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+COPY backend/alembic.ini ./
+COPY backend/migrations ./migrations
 COPY backend/app ./app
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+RUN mkdir -p /data
+CMD ["sh", "-c", "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000"]
 
 # ---------- Development: + test tools ----------
 FROM backend AS dev

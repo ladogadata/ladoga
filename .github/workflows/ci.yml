@@ -48,7 +48,7 @@ jobs:
           docker run -d --name ladoga -p 8000:8000 \
             -e LADOGA_ADMIN_USERNAME=admin \
             -e LADOGA_ADMIN_PASSWORD=ci-password \
-            -e LADOGA_SECRET_KEY=ci-secret \
+            -e LADOGA_SECRET_KEY=ci-secret-key-at-least-32-bytes-long \
             ladoga:ci
       - name: Check API and UI
         run: |

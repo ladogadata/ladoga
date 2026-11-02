@@ -2,3 +2,5 @@ fastapi
 uvicorn[standard]
 pydantic-settings
 pyjwt
+sqlalchemy
+alembic

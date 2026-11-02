@@ -9,9 +9,9 @@ services:
     ports:
       - "127.0.0.1:18000:8000"
     volumes:
-      - ./backend/app:/app/app      # live code reload without rebuilding
-      - ./backend/tests:/app/tests
-    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+      - ./backend:/app              # live code reload without rebuilding
+      - ladoga_data:/data
+    command: ["sh", "-c", "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload --reload-dir app"]
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health')"]
       interval: 10s
@@ -31,3 +31,6 @@ services:
     depends_on:
       - ladoga
     restart: unless-stopped
+
+volumes:
+  ladoga_data:

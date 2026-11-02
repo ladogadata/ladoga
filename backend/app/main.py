@@ -1,3 +1,5 @@
+from sqlalchemy import text
+from app.db import engine
 from pathlib import Path
 
 from fastapi import FastAPI
@@ -12,7 +14,9 @@ app.include_router(auth_router)
 
 @app.get("/api/health")
 def health():
-    return {"status": "ok"}
+    with engine.connect() as conn:
+        conn.execute(text("SELECT 1"))
+    return {"status": "ok", "database": "ok"}
 
 
 class SPAStaticFiles(StaticFiles):

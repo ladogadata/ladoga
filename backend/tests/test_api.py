@@ -4,7 +4,7 @@ from app.main import app
 
 
 def test_health():
-    assert TestClient(app).get("/api/health").json() == {"status": "ok"}
+    assert TestClient(app).get("/api/health").json() == {"status": "ok", "database": "ok"}
 
 
 def test_me_requires_login():

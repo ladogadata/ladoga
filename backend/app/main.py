@@ -16,7 +16,7 @@ def health():
 
 
 class SPAStaticFiles(StaticFiles):
-    """Отдаёт собранный фронтенд; неизвестные пути — в index.html (для роутинга React)."""
+    """Serves the built frontend; unknown paths fall back to index.html (for React routing)."""
 
     async def get_response(self, path, scope):
         try:
@@ -28,5 +28,5 @@ class SPAStaticFiles(StaticFiles):
 
 
 STATIC_DIR = Path(__file__).resolve().parent.parent / "static"
-if STATIC_DIR.is_dir():  # папка есть только в боевом образе
+if STATIC_DIR.is_dir():  # present only in the production image
     app.mount("/", SPAStaticFiles(directory=STATIC_DIR, html=True), name="static")

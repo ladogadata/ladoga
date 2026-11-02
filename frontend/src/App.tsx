@@ -15,15 +15,15 @@ export default function App() {
             value={colorScheme}
             onChange={(value) => setColorScheme(value as MantineColorScheme)}
             data={[
-              { label: 'Светлая', value: 'light' },
-              { label: 'Тёмная', value: 'dark' },
-              { label: 'Системная', value: 'auto' },
+              { label: 'Light', value: 'light' },
+              { label: 'Dark', value: 'dark' },
+              { label: 'System', value: 'auto' },
             ]}
           />
         </Group>
       </AppShell.Header>
       <AppShell.Main>
-        <Text>Здесь будут подключения и каналы репликации.</Text>
+        <Text>Connections and replication channels will appear here.</Text>
       </AppShell.Main>
     </AppShell>
   )

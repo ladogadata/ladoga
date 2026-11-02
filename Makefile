@@ -1,16 +1,16 @@
 COMPOSE ?= docker compose
 .PHONY: up down logs test
 
-up: ## Собрать и запустить
+up: ## Build and start
 	$(COMPOSE) up -d --build --wait
 
-down: ## Остановить
+down: ## Stop
 	$(COMPOSE) down
 
-logs: ## Логи
+logs: ## Follow backend logs
 	$(COMPOSE) logs -f ladoga
 
-test: ## Тесты бэкенда, линтер и сборка фронтенда
+test: ## Run backend tests, frontend lint and build
 	$(COMPOSE) exec ladoga pytest
 	$(COMPOSE) exec frontend npm run lint
 	$(COMPOSE) exec frontend npm run build

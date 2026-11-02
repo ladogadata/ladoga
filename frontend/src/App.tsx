@@ -1,25 +1,38 @@
-import {
-  AppShell, Group, SegmentedControl, Text, Title,
-  useMantineColorScheme, type MantineColorScheme,
-} from '@mantine/core'
+import { useEffect, useState } from 'react'
+import { AppShell, Button, Center, Group, Loader, Text, Title } from '@mantine/core'
+import { api } from './api'
+import { LoginPage } from './LoginPage'
+import { ThemeSwitcher } from './ThemeSwitcher'
 
 export default function App() {
-  const { colorScheme, setColorScheme } = useMantineColorScheme()
+  const [user, setUser] = useState<string | null>(null)
+  const [checking, setChecking] = useState(true)
+
+  useEffect(() => {
+    api<{ username: string }>('/auth/me')
+      .then((me) => setUser(me.username))
+      .catch(() => setUser(null))
+      .finally(() => setChecking(false))
+  }, [])
+
+  async function signOut() {
+    await api('/auth/logout', { method: 'POST' })
+    setUser(null)
+  }
+
+  if (checking) return <Center h="100vh"><Loader /></Center>
+  if (!user) return <LoginPage onLogin={setUser} />
 
   return (
     <AppShell header={{ height: 60 }} padding="md">
       <AppShell.Header>
         <Group h="100%" px="md" justify="space-between">
           <Title order={3}>Ladoga</Title>
-          <SegmentedControl
-            value={colorScheme}
-            onChange={(value) => setColorScheme(value as MantineColorScheme)}
-            data={[
-              { label: 'Light', value: 'light' },
-              { label: 'Dark', value: 'dark' },
-              { label: 'System', value: 'auto' },
-            ]}
-          />
+          <Group>
+            <ThemeSwitcher />
+            <Text size="sm" c="dimmed">{user}</Text>
+            <Button variant="default" size="xs" onClick={signOut}>Sign out</Button>
+          </Group>
         </Group>
       </AppShell.Header>
       <AppShell.Main>

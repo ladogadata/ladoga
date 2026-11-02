@@ -16,3 +16,16 @@ services:
       timeout: 3s
       retries: 10
     restart: unless-stopped
+
+  frontend:
+    image: node:24
+    container_name: ladoga-frontend
+    working_dir: /app
+    volumes:
+      - ./frontend:/app             # пакеты ставятся в frontend/node_modules, PyCharm их видит
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+    ports:
+      - "127.0.0.1:15173:5173"
+    depends_on:
+      - ladoga
+    restart: unless-stopped
